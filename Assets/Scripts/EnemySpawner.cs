@@ -15,6 +15,8 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private EnemyConfig mineConfig = new EnemyConfig { spawnInterval = 4f, speed = 2f };
     [SerializeField] private EnemyConfig eelConfig = new EnemyConfig { spawnInterval = 7f, speed = 6f };
     [SerializeField] private EnemyConfig urchinConfig = new EnemyConfig { spawnInterval = 5f, speed = 3.5f };
+    [SerializeField] private EnemyConfig sharkConfig = new EnemyConfig { spawnInterval = 5f, speed = 3.5f };
+    [SerializeField] private EnemyConfig tentacleConfig = new EnemyConfig { spawnInterval = 5f, speed = 3.5f };
 
     [Header("Configuración de Áreas")]
     [SerializeField] private Vector2 spawnRangeX = new Vector2(-6f, 6f);
@@ -30,6 +32,8 @@ public class EnemySpawner : MonoBehaviour
         StartCoroutine(SpawnRoutine(mineConfig, spawnYBottom, Vector3.up));
         StartCoroutine(SpawnRoutine(eelConfig, spawnYBottom, Vector3.up));
         StartCoroutine(SpawnRoutine(urchinConfig, spawnYTop, Vector3.down));
+        StartCoroutine(SpawnRoutine(sharkConfig, spawnYBottom, Vector3.up));
+        StartCoroutine(SpawnRoutine(tentacleConfig, spawnYBottom, Vector3.up));
     }
 
     private IEnumerator SpawnRoutine(EnemyConfig config, float spawnY, Vector3 moveDirection)
@@ -45,7 +49,13 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy(EnemyConfig config, float spawnY, Vector3 moveDirection)
     {
+
         float randomX = Random.Range(spawnRangeX.x, spawnRangeX.y);
+        print($"Spawned {config.prefab.name} at X: {randomX}");
+        bool randomBool = Random.value > 0.5f;
+        float xPos = randomBool ? 12f : -12f;
+        randomX = config.prefab.name == "Tentacle" ? xPos : randomX;
+
         Vector3 spawnPosition = new Vector3(randomX, spawnY, 0f);
 
         GameObject newEnemy = Instantiate(config.prefab, spawnPosition, Quaternion.identity);
@@ -54,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
 
         if (enemyScript != null)
         {
-            // NUEVO: Lógica cruzada. 
+            // NUEVO: Lógica cruzada.
             // Si va hacia arriba, su límite de destrucción es el tope Y + el margen extra.
             // Si va hacia abajo, su límite es la base Y - el margen extra.
             float destroyLimit = (moveDirection.y > 0) ? (spawnYTop + destroyOffset) : (spawnYBottom - destroyOffset);
