@@ -41,4 +41,14 @@ public abstract class EnemyBase : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            // Aquí puedes agregar la lógica de daño al jugador
+            Debug.Log($"{gameObject.name} hit the player!");
+            //Destroy(gameObject); // Destruye el enemigo al colisionar con el jugador
+        }
+    }
 }
