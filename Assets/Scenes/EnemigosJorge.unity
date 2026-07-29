@@ -583,7 +583,15 @@ MonoBehaviour:
     speed: 6
   urchinConfig:
     prefab: {fileID: 3892551913399709620, guid: 79c1d3b5a8042aa4dade31fb1515ffd8, type: 3}
-    spawnInterval: 8
+    spawnInterval: 2
+    speed: 3.5
+  sharkConfig:
+    prefab: {fileID: 0}
+    spawnInterval: 5
+    speed: 3.5
+  tentacleConfig:
+    prefab: {fileID: 0}
+    spawnInterval: 5
     speed: 3.5
   spawnRangeX: {x: -12, y: 12}
   spawnYBottom: 3.35

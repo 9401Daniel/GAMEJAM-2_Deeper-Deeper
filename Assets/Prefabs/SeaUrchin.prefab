@@ -125,3 +125,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac0a4ac0a533b44ca7110a8548b556c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeaUrchin
+  minTumbleSpeed: -50
+  maxTumbleSpeed: 50
