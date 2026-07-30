@@ -23,9 +23,18 @@ public class OptionsManager : MonoBehaviour
         float sfx = PlayerPrefs.GetFloat("SfxVolume", 1f);
 
         // Asignamos el valor visual a los sliders
-        if (masterVolume != null) masterVolume.value = master;
-        if (musicVolume != null) musicVolume.value = music;
-        if (sfxVolume != null) sfxVolume.value = sfx;
+        if (masterVolume != null)
+        {
+            masterVolume.value = master;
+        } 
+        if (musicVolume != null)
+        {
+            musicVolume.value = music;
+        }
+        if (sfxVolume != null)
+        {
+            sfxVolume.value = sfx;
+        } 
 
         // Aplicamos al AudioManager
         if (AudioManager.Instance != null)
@@ -44,7 +53,10 @@ public class OptionsManager : MonoBehaviour
         if (!isLoaded) return; // Si no ha terminado de cargar, ignoramos
 
         if (AudioManager.Instance != null)
+        {
+            Debug.Log();
             AudioManager.Instance.SetMasterVolume(value);
+        }
         
         PlayerPrefs.SetFloat("MasterVolume", value);
     }
@@ -67,7 +79,9 @@ public class OptionsManager : MonoBehaviour
         if (!isLoaded) return;
 
         if (AudioManager.Instance != null)
+        {
             AudioManager.Instance.SetSfxVolume(value);
+        } 
         
         PlayerPrefs.SetFloat("SfxVolume", value);
     }
@@ -77,6 +91,8 @@ public class OptionsManager : MonoBehaviour
         PlayerPrefs.Save();
         
         if (UIManager.Instance != null)
+        {
             UIManager.Instance.ShowMainMenu();
+        }
     }
 }
