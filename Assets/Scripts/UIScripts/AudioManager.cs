@@ -25,7 +25,7 @@ public class AudioManager : MonoBehaviour
     [Header("Balance de Ambiente")]
     [Tooltip("El ambiente es solo de apoyo, así que suena a este % del volumen de música (0.5 = mitad de fuerte)")]
     [Range(0f, 1f)]
-    [SerializeField] private float ambienceRelativeLevel = 0.5f;
+    [SerializeField] private float ambienceRelativeLevel = 0.35f;
 
     // Se guarda el estado previo para distinguir "empezar partida" (MainMenu/GameOver -> InGame)
     // de simplemente "reanudar" (Paused -> InGame), que no debe repetir el sonido de inicio.
@@ -33,6 +33,7 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
+        //PlayerPrefs.DeleteAll();      //<--- Descomentar en caso de que se corrompan las player prefs
         if (Instance == null)
         {
             Instance = this;
@@ -131,7 +132,6 @@ public class AudioManager : MonoBehaviour
         // Música y ambiente comparten el mismo slider en Options, pero el ambiente
         // se escala por ambienceRelativeLevel para que siempre suene más bajo (es solo apoyo).
         SetMixerVolume("MusicVol", value);
-        SetMixerVolume("AmbienceVol", value * ambienceRelativeLevel);
         PlayerPrefs.SetFloat("MusicVolume", value);
     }
 
@@ -141,18 +141,30 @@ public class AudioManager : MonoBehaviour
         PlayerPrefs.SetFloat("SfxVolume", value);
     }
 
+    public void SetAmbienceVolume(float value)
+    {
+        SetMixerVolume("AmbienceVol", value * ambienceRelativeLevel);
+    }
+
     private void SetMixerVolume(string exposedParameter, float linearValue)
     {
-        
-
         if (audioMixer == null) 
         {
             Debug.Log("Mixer nulo");
             return;
         }
-        float dB = linearValue > 0.0001f ? Mathf.Log10(linearValue) * 20f : -80f;
+        
+        float dB;
+        // Si el valor del slider es exactamente 0 o cercano a 0, aplicamos silencio absoluto (-80dB)
+        if (linearValue <= 0.0001f)
+        {
+            dB = -80f;
+        }
+        else
+        {
+            dB = Mathf.Log10(linearValue) * 20f;
+        }
 
-        Debug.Log($"{exposedParameter} -> {dB}");
         audioMixer.SetFloat(exposedParameter, dB);
     }
 
@@ -161,10 +173,6 @@ public class AudioManager : MonoBehaviour
         float masterVol = PlayerPrefs.GetFloat("MasterVolume", 1f);
         float musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
         float sfxVol = PlayerPrefs.GetFloat("SfxVolume", 1f);
-
-        Debug.Log($"Master Pref: {masterVol}");
-        Debug.Log($"Music Pref: {musicVol}");
-        Debug.Log($"SFX Pref: {sfxVol}");
 
         SetMixerVolume("MasterVol", masterVol);
         SetMixerVolume("MusicVol", musicVol);
