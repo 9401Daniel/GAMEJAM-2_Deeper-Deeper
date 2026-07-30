@@ -574,23 +574,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   mineConfig:
-    prefab: {fileID: 2366303915258925793, guid: 4624447dacbd2c14cb36fae3c653fa84, type: 3}
+    prefab: {fileID: 7690456972557572162, guid: eee767841658d174690b286211d0b036, type: 3}
     spawnInterval: 10
     speed: 2
   eelConfig:
-    prefab: {fileID: 362763233853125540, guid: 997763de1dabeb946938cd2646c087b5, type: 3}
+    prefab: {fileID: 1930493017547859506, guid: 336880469d03e604e9d708a7777fb24b, type: 3}
     spawnInterval: 15
     speed: 6
   urchinConfig:
-    prefab: {fileID: 3892551913399709620, guid: 79c1d3b5a8042aa4dade31fb1515ffd8, type: 3}
+    prefab: {fileID: 5868268638379258259, guid: fc86a652477810e4c9355489992b23d7, type: 3}
     spawnInterval: 10
     speed: 3.5
   sharkConfig:
-    prefab: {fileID: 6923605309316399131, guid: e052a299d25ac444d946be1dfcf048a5, type: 3}
+    prefab: {fileID: 1134313598288313677, guid: 414ff73b8c9a9f7498f1485c39435e04, type: 3}
     spawnInterval: 5
     speed: 3.5
   tentacleConfig:
-    prefab: {fileID: 6779191168818705756, guid: 4d473695999bf2846810bb2a6647513e, type: 3}
+    prefab: {fileID: 5244335047592767533, guid: 56e6b9718ef9523439e037f3f8d71c3f, type: 3}
     spawnInterval: 5
     speed: 3.5
   spawnRangeX: {x: -12, y: 12}

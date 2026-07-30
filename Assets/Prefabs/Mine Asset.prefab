@@ -10,27 +10,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 20
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
       propertyPath: m_LocalScale.y
-      value: 20
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
       propertyPath: m_LocalScale.z
-      value: 20
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -7.7493815
+      value: -5.803197
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.13
+      value: -0.00000012395594
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.124902
+      value: 0.14324589
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -66,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
       propertyPath: m_Name
-      value: model
+      value: Mine Asset
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -75,6 +75,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8099165370911234152}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6643046178561931046}
   m_SourcePrefab: {fileID: 100100000, guid: a4ad8d7ed8cf7d142b1c148d67bd67c6, type: 3}
 --- !u!1 &7690456972557572162 stripped
 GameObject:
@@ -104,3 +107,17 @@ CapsuleCollider:
   m_Height: 0
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6643046178561931046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690456972557572162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55d2e0f42ac87ec40bd49a10880dcccb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Mine
+  rotationSpeed: 45
+  rotationAxis: {x: 0, y: 1, z: 0}

@@ -51,14 +51,18 @@ public class EnemySpawner : MonoBehaviour
     {
 
         float randomX = Random.Range(spawnRangeX.x, spawnRangeX.y);
-        print($"Spawned {config.prefab.name} at X: {randomX}");
         bool randomBool = Random.value > 0.5f;
-        float xPos = randomBool ? 12f : -12f;
-        randomX = config.prefab.name == "Tentacle" ? xPos : randomX;
-
+        float xPos = randomBool ? -11 : 11;
+        randomX = config.prefab.name == "Tentacle 1" ? xPos : randomX;
         Vector3 spawnPosition = new Vector3(randomX, spawnY, 0f);
 
-        GameObject newEnemy = Instantiate(config.prefab, spawnPosition, Quaternion.identity);
+        Quaternion spawnRotation = Quaternion.identity;
+        if (config.prefab.name == "Tentacle 1" && xPos < 0)
+        {
+            spawnRotation = Quaternion.Euler(-90, 180, 0);
+        }
+
+        GameObject newEnemy = Instantiate(config.prefab, spawnPosition, spawnRotation);
 
         EnemyBase enemyScript = newEnemy.GetComponent<EnemyBase>();
 
