@@ -41,7 +41,6 @@ public class PlayerClickMove : MonoBehaviour
             // --- MOVIMIENTO ---
             Vector3 nuevaPosicion = Vector3.MoveTowards(transform.position, destino, velocidad * Time.deltaTime);
             rb.MovePosition(nuevaPosicion);
-
             // --- ROTACIÓN ---
             Vector3 direccion = (destino - transform.position).normalized;
             if (direccion != Vector3.zero)
