@@ -1,0 +1,155 @@
+using UnityEngine;
+using UnityEngine.Audio;
+
+public class AudioManager : MonoBehaviour
+{
+    public static AudioManager Instance { get; private set; }
+
+    [Header("Audio Source")]
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioSource ambienceSource;
+
+    [Header("Audio Mixer")]
+    [Tooltip("Parámetros expuestos requeridos: MasterVol, MusicVol, AmbienceVol, SFXVol")]
+    [SerializeField] private AudioMixer audioMixer;
+
+    [Header("Audio Clips")]
+    [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private AudioClip sfxAmbience;
+    [SerializeField] private AudioClip sfxClickButton;
+    [SerializeField] private AudioClip sfxPlayerDamage;
+    [SerializeField] private AudioClip sfxPlayerDeath;
+    [SerializeField] private AudioClip sfxStartGame;
+
+    [Header("Balance de Ambiente")]
+    [Tooltip("El ambiente es solo de apoyo, así que suena a este % del volumen de música (0.5 = mitad de fuerte)")]
+    [Range(0f, 1f)]
+    [SerializeField] private float ambienceRelativeLevel = 0.5f;
+
+    // Se guarda el estado previo para distinguir "empezar partida" (MainMenu/GameOver -> InGame)
+    // de simplemente "reanudar" (Paused -> InGame), que no debe repetir el sonido de inicio.
+    private UIManager.GameState lastState;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    void OnEnable()
+    {
+        UIManager.OnStateChanged += HandleStateChanged;
+    }
+
+    void OnDisable()
+    {
+        UIManager.OnStateChanged -= HandleStateChanged;
+    }
+
+    void Start()
+    {
+        LoadVolumeSettings();
+        PlayBackgroundMusic(backgroundMusic);
+        PlayAmbienceSound(sfxAmbience);
+    }
+
+    private void HandleStateChanged(UIManager.GameState state)
+    {
+        bool isFreshGameStart = state == UIManager.GameState.InGame
+                                 && lastState != UIManager.GameState.Paused;
+
+        if (isFreshGameStart)
+            PlaySFXStartGame();
+
+        lastState = state;
+    }
+
+    // ----- Música y ambiente -----
+
+    void PlayBackgroundMusic(AudioClip clip)
+    {
+        if (clip == null || musicSource == null) return;
+        if (musicSource.clip == clip && musicSource.isPlaying) return;
+
+        musicSource.clip = clip;
+        musicSource.loop = true;
+        musicSource.Play();
+    }
+
+    void PlayAmbienceSound(AudioClip clip)
+    {
+        if (clip == null || ambienceSource == null) return;
+        if (ambienceSource.clip == clip && ambienceSource.isPlaying) return;
+
+        ambienceSource.clip = clip;
+        ambienceSource.loop = true;
+        ambienceSource.Play();
+    }
+
+    // ----- SFX -----
+    // Método genérico + wrappers con nombre, para que sea fácil de llamar
+    // desde otros scripts sin exponer AudioClips fuera del AudioManager.
+
+    private void PlaySfx(AudioClip clip)
+    {
+        if (sfxSource != null && clip != null)
+            sfxSource.PlayOneShot(clip);
+    }
+
+    public void PlaySFXClickButton()  => PlaySfx(sfxClickButton);
+    public void PlaySFXPlayerDamage() => PlaySfx(sfxPlayerDamage);
+    public void PlaySFXPlayerDeath()  => PlaySfx(sfxPlayerDeath);
+    public void PlaySFXStartGame()    => PlaySfx(sfxStartGame);
+
+    // ----- Volumen (llamado desde OptionsManager) -----
+    // El slider manda un valor lineal 0-1; el AudioMixer trabaja en decibelios,
+    // por eso la conversión con Log10. -80dB se considera silencio total.
+    public void SetMasterVolume(float value)
+    {
+        SetMixerVolume("MasterVol", value);
+        PlayerPrefs.SetFloat("MasterVolume", value);
+    }
+
+    public void SetMusicVolume(float value)
+    {
+        // Música y ambiente comparten el mismo slider en Options, pero el ambiente
+        // se escala por ambienceRelativeLevel para que siempre suene más bajo (es solo apoyo).
+        SetMixerVolume("MusicVol", value);
+        SetMixerVolume("AmbienceVol", value * ambienceRelativeLevel);
+        PlayerPrefs.SetFloat("MusicVolume", value);
+    }
+
+    public void SetSfxVolume(float value)
+    {
+        SetMixerVolume("SFXVol", value);
+        PlayerPrefs.SetFloat("SfxVolume", value);
+    }
+
+    private void SetMixerVolume(string exposedParameter, float linearValue)
+    {
+        if (audioMixer == null) return;
+        float dB = linearValue > 0.0001f ? Mathf.Log10(linearValue) * 20f : -80f;
+        audioMixer.SetFloat(exposedParameter, dB);
+    }
+
+    private void LoadVolumeSettings()
+    {
+        float masterVol    = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        float musicVol  = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        float sfxVol    = PlayerPrefs.GetFloat("SfxVolume", 1f);
+
+        SetMixerVolume("MasterVol", masterVol);
+        SetMixerVolume("MusicVol", musicVol);
+        SetMixerVolume("AmbienceVol", musicVol * ambienceRelativeLevel);
+        SetMixerVolume("SFXVol", sfxVol);
+    }
+}
