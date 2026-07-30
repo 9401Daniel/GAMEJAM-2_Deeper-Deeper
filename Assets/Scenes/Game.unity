@@ -752,7 +752,7 @@ Transform:
   m_GameObject: {fileID: 1727605982}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -98.5, z: 5.5}
+  m_LocalPosition: {x: 0, y: -98.5, z: 5.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -773,7 +773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f96f2c910573c344b8590d50d9a150de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveUp
-  speed: 10
+  speed: 3.5
 --- !u!65 &1727605985
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -793,8 +793,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 31.718012, y: 108.24625, z: 1.0042506}
-  m_Center: {x: 0, y: -1.3768482, z: 0}
+  m_Size: {x: 31.718012, y: 109.98979, z: 1.0042506}
+  m_Center: {x: 0, y: -0.50507164, z: 0}
 --- !u!114 &1727605986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,7 +807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49be972625237984a867fef6b1a42baf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RepeatBackground
-  startPos: {x: 0, y: -43, z: 5.5}
+  startPos: {x: 0, y: -43, z: 5.1}
 --- !u!1001 &702891628108767679
 PrefabInstance:
   m_ObjectHideFlags: 0
