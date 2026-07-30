@@ -42,6 +42,12 @@ public class UIManager : MonoBehaviour
     private Dictionary<GameState, CanvasGroup> panels;
     private GameState currentState;
     private Coroutine transitionRoutine;
+    // Dependencias
+    public Timer timer;
+    public PlayerClickMove player;
+    public EnemySpawner spawner;
+    public MoveUp background;
+
 
     void Awake()
     {
@@ -99,9 +105,33 @@ public class UIManager : MonoBehaviour
     public void ShowHowToPlay()  => ChangeState(GameState.HowToPlay);
     public void ShowOptions()  => ChangeState(GameState.Options);
     public void ShowCredits()  => ChangeState(GameState.Credits);
-    public void ShowInGame()   => ChangeState(GameState.InGame);
-    public void ShowPaused()   => ChangeState(GameState.Paused);
-    public void ShowGameOver() => ChangeState(GameState.GameOver);
+    public void ShowInGame() 
+    
+    {
+        Time.timeScale = 1f;
+        ChangeState(GameState.InGame);
+        timer.InitTimer();
+        player.SetPlayerStart(true);
+        spawner.StartSpawn(true);
+        background.SetIsPlaying(true);
+        
+    }
+    public void ShowPaused() 
+    {
+        ChangeState(GameState.Paused);
+        Time.timeScale = 0f;
+
+    
+    }
+    public void ShowGameOver() 
+    {
+        spawner.StartSpawn(false);
+        ChangeState(GameState.GameOver);
+        timer.StopTimer();
+        player.SetPlayerStart(false);
+        background.SetIsPlaying(false);
+
+    }
 
     public void ChangeState(GameState next)
     {

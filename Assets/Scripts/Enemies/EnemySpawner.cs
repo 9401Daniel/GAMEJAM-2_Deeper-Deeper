@@ -26,26 +26,39 @@ public class EnemySpawner : MonoBehaviour
     // NUEVO: Margen extra para que el modelo 3D alcance a salir completamente de la pantalla
     [Tooltip("Distancia extra antes de destruir el objeto")]
     [SerializeField] private float destroyOffset = 3f;
-
-    private void Start()
+    private bool startSpawn = false;
+    private Coroutine enemiesCoroutine;
+    private void InitSpawn()
     {
         StartCoroutine(SpawnRoutine(mineConfig, spawnYBottom, Vector3.up));
         StartCoroutine(SpawnRoutine(eelConfig, spawnYBottom, Vector3.up));
         StartCoroutine(SpawnRoutine(urchinConfig, spawnYTop, Vector3.down));
         StartCoroutine(SpawnRoutine(sharkConfig, spawnYBottom, Vector3.up));
-        StartCoroutine(SpawnRoutine(tentacleConfig, spawnYBottom, Vector3.up));
+        enemiesCoroutine = StartCoroutine(SpawnRoutine(tentacleConfig, spawnYBottom, Vector3.up));
     }
 
     private IEnumerator SpawnRoutine(EnemyConfig config, float spawnY, Vector3 moveDirection)
     {
         if (config.prefab == null) yield break;
 
-        while (true)
+        while (startSpawn)
         {
             yield return new WaitForSeconds(config.spawnInterval);
             SpawnEnemy(config, spawnY, moveDirection);
         }
     }
+    public void StartSpawn(bool startSpawn) 
+    {
+        this.startSpawn = startSpawn;
+        if (startSpawn)
+        {
+            if (enemiesCoroutine == null)
+            {
+                InitSpawn();
+            }
+        }
+    }
+  
 
     private void SpawnEnemy(EnemyConfig config, float spawnY, Vector3 moveDirection)
     {

@@ -7,6 +7,8 @@ public class PlayerForms : MonoBehaviour
     public GameObject forma2;
     public GameObject forma3;
     private int health = 3;
+    private bool gameOver = false;
+   
     public GameObject FormaActual
     {
         get
@@ -23,24 +25,37 @@ public class PlayerForms : MonoBehaviour
         playerClickMove = GetComponent<PlayerClickMove>();
         ActivarForma(3);
     }
-
-    void Update()
-    {
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            SiguienteForma();
-        }
-    }
     public void SiguienteForma()
     {
-        health--;
-        if (health <= 0)
+        if (!gameOver) 
         {
-            Debug.Log("GAME OVER");
-            health = 0;
-            return;
+            health--;
+            if (health <= 0)
+            {
+                GameOver();
+                return;
+            }
+
+            AudioManager.Instance.PlaySFXPlayerDamage();
+            ActivarForma(health);
+
         }
-        ActivarForma(health);
+     
+    }
+
+    public void GameOver() 
+    {
+        gameOver = true;
+        EnemyBase[] enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
+        foreach (EnemyBase enemy in enemies) 
+        {
+            Destroy(enemy.gameObject);
+        }
+        UIManager.Instance.ShowGameOver();
+        AudioManager.Instance.PlaySFXPlayerDeath();
+        Debug.Log("GAME OVER");
+        health = 0;
+
     }
 
     private void ActivarForma(int index)

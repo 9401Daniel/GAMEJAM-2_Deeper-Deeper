@@ -1,4 +1,6 @@
 using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,11 +10,10 @@ public class Timer : MonoBehaviour
     private int segundoAnterior = -1;
     public bool Activo { private set; get; } = false;
     public UnityEvent CambioTiempo { private set; get; } = new UnityEvent();
-
+    [SerializeField] private TextMeshProUGUI scoreText;
     private void Start()
     {
         CambioTiempo.AddListener(FormatTime);
-        InitTimer();
     }
     private void Update()
     {
@@ -41,6 +42,7 @@ public class Timer : MonoBehaviour
     {
         int minutos = Mathf.FloorToInt(tiempo / 60);
         int segundos = Mathf.FloorToInt(tiempo % 60);
-        print(string.Format("{0:00}:{1:00}", minutos, segundos));
+        string score = "Depth: " + (string.Format("{0:00}:{1:00}", minutos, segundos));
+        scoreText.text = $"{score}";
     }
 }
