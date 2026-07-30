@@ -54,7 +54,6 @@ public class OptionsManager : MonoBehaviour
 
         if (AudioManager.Instance != null)
         {
-            Debug.Log();
             AudioManager.Instance.SetMasterVolume(value);
         }
         
@@ -85,6 +84,7 @@ public class OptionsManager : MonoBehaviour
         
         PlayerPrefs.SetFloat("SfxVolume", value);
     }
+    
 
     public void OnBackPressed()
     {
