@@ -4,12 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-/// <summary>
-/// Controla el flujo principal de pantallas del juego (Deeper and Deeper).
-/// Cada pantalla es un panel con CanvasGroup. El UIManager solo se encarga
-/// de mostrar/ocultar paneles y hacer el fade entre ellos; la lógica interna
-/// de cada pantalla (Options, Credits, etc.) vive en su propio script.
-/// </summary>
+
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }

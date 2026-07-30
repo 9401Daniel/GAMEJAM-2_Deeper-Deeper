@@ -58,14 +58,14 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         LoadVolumeSettings();
+
         PlayBackgroundMusic(backgroundMusic);
         PlayAmbienceSound(sfxAmbience);
     }
 
     private void HandleStateChanged(UIManager.GameState state)
     {
-        bool isFreshGameStart = state == UIManager.GameState.InGame
-                                 && lastState != UIManager.GameState.Paused;
+        bool isFreshGameStart = state == UIManager.GameState.InGame && lastState != UIManager.GameState.Paused;
 
         if (isFreshGameStart)
             PlaySFXStartGame();
@@ -77,8 +77,15 @@ public class AudioManager : MonoBehaviour
 
     void PlayBackgroundMusic(AudioClip clip)
     {
-        if (clip == null || musicSource == null) return;
-        if (musicSource.clip == clip && musicSource.isPlaying) return;
+
+        if (clip == null || musicSource == null) 
+        {
+            return;
+        }
+        if (musicSource.clip == clip && musicSource.isPlaying) 
+        {
+            return;
+        }
 
         musicSource.clip = clip;
         musicSource.loop = true;
@@ -136,16 +143,28 @@ public class AudioManager : MonoBehaviour
 
     private void SetMixerVolume(string exposedParameter, float linearValue)
     {
-        if (audioMixer == null) return;
+        
+
+        if (audioMixer == null) 
+        {
+            Debug.Log("Mixer nulo");
+            return;
+        }
         float dB = linearValue > 0.0001f ? Mathf.Log10(linearValue) * 20f : -80f;
+
+        Debug.Log($"{exposedParameter} -> {dB}");
         audioMixer.SetFloat(exposedParameter, dB);
     }
 
     private void LoadVolumeSettings()
     {
-        float masterVol    = PlayerPrefs.GetFloat("MasterVolume", 1f);
-        float musicVol  = PlayerPrefs.GetFloat("MusicVolume", 1f);
-        float sfxVol    = PlayerPrefs.GetFloat("SfxVolume", 1f);
+        float masterVol = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        float musicVol = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        float sfxVol = PlayerPrefs.GetFloat("SfxVolume", 1f);
+
+        Debug.Log($"Master Pref: {masterVol}");
+        Debug.Log($"Music Pref: {musicVol}");
+        Debug.Log($"SFX Pref: {sfxVol}");
 
         SetMixerVolume("MasterVol", masterVol);
         SetMixerVolume("MusicVol", musicVol);
