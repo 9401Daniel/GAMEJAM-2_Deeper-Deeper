@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8007950220795964126}
   - component: {fileID: 3866454378903409130}
+  - component: {fileID: 1829724811714720901}
   m_Layer: 0
   m_Name: Tentacle 1
   m_TagString: Untagged
@@ -47,6 +48,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tentacle
   speedHorizontal: 1
   timeToChangeDirection: 0.5
+--- !u!136 &1829724811714720901
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261958200284969299}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.59258336
+  m_Height: 4.099688
+  m_Direction: 0
+  m_Center: {x: -2.3311713, y: -0.22415113, z: -0.26264232}
 --- !u!1001 &1076931669492979926
 PrefabInstance:
   m_ObjectHideFlags: 0

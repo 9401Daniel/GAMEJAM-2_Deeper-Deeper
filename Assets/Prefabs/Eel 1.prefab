@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4493413797732405397}
   - component: {fileID: 7459783306177398788}
+  - component: {fileID: 3455762845274556764}
   m_Layer: 0
   m_Name: Eel 1
   m_TagString: Untagged
@@ -45,6 +46,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b214fa05fed9b14c83a631c570d2552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Eel
+--- !u!136 &3455762845274556764
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824193834348104225}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.1711533
+  m_Height: 1.7304201
+  m_Direction: 1
+  m_Center: {x: 0.35758424, y: 1.9642844, z: 0}
 --- !u!1001 &5979879177544769630
 PrefabInstance:
   m_ObjectHideFlags: 0
