@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -49,6 +50,9 @@ public class UIManager : MonoBehaviour
     public MoveUp background;
 
     public PlayerForms playerForms;
+
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI highScoreText;
 
 
     void Awake()
@@ -157,6 +161,9 @@ public class UIManager : MonoBehaviour
         playerMovement.SetPlayerStart(false);
         background.SetIsPlaying(false);
         //Falta guardar y mostrar el score en el panel de GameOver
+        SaveScore.Instance.SaveHighScore(timer.formatTime);
+        scoreText.text = "Final score: " + timer.formatTime;
+        highScoreText.text = "High score: " + SaveScore.Instance.GetHighScore();
     }
 
     public void ChangeState(GameState next)

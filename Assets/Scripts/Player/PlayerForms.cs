@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerForms : MonoBehaviour
@@ -9,6 +10,9 @@ public class PlayerForms : MonoBehaviour
     private bool gameOver = false;
     private Vector3 initialPosition;
     private Quaternion initialRotation;
+    public Animator animator;
+
+    public ParticleSystem damageEffect;
     public GameObject FormaActual
     {
         get
@@ -29,28 +33,41 @@ public class PlayerForms : MonoBehaviour
         initialPosition = transform.position;
         initialRotation = transform.rotation;
     }
+
+    private void Update()
+    {
+        if (gameOver)
+        {
+            animator.SetBool("Death", true);
+            animator.gameObject.transform.rotation = Quaternion.Euler(0, 258, 0);
+        }
+    }
     public void SiguienteForma()
     {
         if (!gameOver)
         {
             health--;
+            StartCoroutine(PlayDamageEffect());
             if (health <= 0)
             {
                 GameOver();
                 return;
             }
-
-            AudioManager.Instance.PlaySFXPlayerDamage();
             ActivarForma(health);
-
         }
+    }
+
+    private IEnumerator PlayDamageEffect()
+    {
+        damageEffect.Play();
+        AudioManager.Instance.PlaySFXPlayerDamage();
+        yield return new WaitForSeconds(0.3f);
     }
 
     public void GameOver()
     {
         gameOver = true;
         UIManager.Instance.ShowGameOver();
-        AudioManager.Instance.PlaySFXPlayerDeath();
         Debug.Log("GAME OVER");
         health = 0;
     }
@@ -65,11 +82,13 @@ public class PlayerForms : MonoBehaviour
 
     public void ResetPlayer()
     {
+        animator.SetBool("Death", false);
         health = 3;
         gameOver = false;
         ActivarForma(health);
         transform.position = initialPosition;
         transform.rotation = initialRotation;
         playerClickMove.SetPlayerStart(true);
+        animator.gameObject.transform.rotation = Quaternion.Euler(-73, 175, 0);
     }
 }

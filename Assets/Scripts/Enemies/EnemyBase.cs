@@ -8,7 +8,14 @@ public abstract class EnemyBase : MonoBehaviour
     // Nuevo: Guardará el límite en el eje Y donde el objeto debe morir
     protected float destroyYLimit;
 
+    private CapsuleCollider capsuleCollider;
+
     // Actualizamos el inicializador para recibir el límite
+
+    void Start()
+    {
+        capsuleCollider = GetComponent<CapsuleCollider>();
+    }
     public virtual void Initialize(float moveSpeed, Vector3 direction, float destroyLimit)
     {
         speed = moveSpeed;
@@ -46,8 +53,11 @@ public abstract class EnemyBase : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            if (capsuleCollider != null)
+            {
+                capsuleCollider.enabled = false; // Desactivamos el collider para evitar múltiples colisiones
+            }
             other.transform.parent.GetComponent<PlayerForms>().SiguienteForma();
-            Destroy(gameObject);
         }
     }
 }

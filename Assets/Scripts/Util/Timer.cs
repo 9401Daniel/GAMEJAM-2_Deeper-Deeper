@@ -11,6 +11,7 @@ public class Timer : MonoBehaviour
     public bool Activo { private set; get; } = false;
     public UnityEvent CambioTiempo { private set; get; } = new UnityEvent();
     [SerializeField] private TextMeshProUGUI scoreText;
+    public string formatTime { private set; get; }
     private void Start()
     {
         CambioTiempo.AddListener(FormatTime);
@@ -42,7 +43,8 @@ public class Timer : MonoBehaviour
     {
         int minutos = Mathf.FloorToInt(tiempo / 60);
         int segundos = Mathf.FloorToInt(tiempo % 60);
-        string score = "Depth: " + (string.Format("{0:00}:{1:00}", minutos, segundos));
+        formatTime = string.Format("{0:00}:{1:00}", minutos, segundos);
+        string score = "Depth: " + formatTime;
         scoreText.text = $"{score}";
     }
 }
