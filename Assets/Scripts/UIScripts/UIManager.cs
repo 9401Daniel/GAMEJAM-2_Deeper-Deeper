@@ -44,9 +44,11 @@ public class UIManager : MonoBehaviour
     private Coroutine transitionRoutine;
     // Dependencias
     public Timer timer;
-    public PlayerClickMove player;
+    public PlayerClickMove playerMovement;
     public EnemySpawner spawner;
     public MoveUp background;
+
+    public PlayerForms playerForms;
 
 
     void Awake()
@@ -99,38 +101,62 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    private void DestroyEnemies()
+    {
+        EnemyBase[] enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
+        foreach (EnemyBase enemy in enemies)
+        {
+            Destroy(enemy.gameObject);
+        }
+    }
+
     // ----- Métodos públicos para conectar desde botones (OnClick en el Inspector) -----
 
-    public void ShowMainMenu() => ChangeState(GameState.MainMenu);
-    public void ShowHowToPlay()  => ChangeState(GameState.HowToPlay);
-    public void ShowOptions()  => ChangeState(GameState.Options);
-    public void ShowCredits()  => ChangeState(GameState.Credits);
-    public void ShowInGame() 
-    
+    public void ShowMainMenu()
     {
+        ChangeState(GameState.MainMenu);
         Time.timeScale = 1f;
+        playerForms.ResetPlayer();
+        playerMovement.SetPlayerStart(false);
+        background.SetIsPlaying(false);
+        background.ResetPosition();
+        spawner.ResetSpawn();
+        DestroyEnemies();
+        timer.StopTimer();
+    }
+
+    public void ShowHowToPlay() => ChangeState(GameState.HowToPlay);
+    public void ShowOptions() => ChangeState(GameState.Options);
+    public void ShowCredits() => ChangeState(GameState.Credits);
+    public void ShowInGame()
+    {
         ChangeState(GameState.InGame);
-        timer.InitTimer();
-        player.SetPlayerStart(true);
+        if (!timer.Activo) timer.InitTimer();
+        Time.timeScale = 1f;
+        if (playerForms.IsGameOver)
+        {
+            playerForms.ResetPlayer();
+            spawner.ResetSpawn();
+            background.ResetPosition();
+        }
+        playerMovement.SetPlayerStart(true);
         spawner.StartSpawn(true);
         background.SetIsPlaying(true);
-        
     }
-    public void ShowPaused() 
+    public void ShowPaused()
     {
         ChangeState(GameState.Paused);
         Time.timeScale = 0f;
-
-    
     }
-    public void ShowGameOver() 
+    public void ShowGameOver()
     {
-        spawner.StartSpawn(false);
         ChangeState(GameState.GameOver);
+        spawner.ResetSpawn();
+        DestroyEnemies();
         timer.StopTimer();
-        player.SetPlayerStart(false);
+        playerMovement.SetPlayerStart(false);
         background.SetIsPlaying(false);
-
+        //Falta guardar y mostrar el score en el panel de GameOver
     }
 
     public void ChangeState(GameState next)
@@ -141,7 +167,6 @@ public class UIManager : MonoBehaviour
             Debug.LogWarning($"UIManager: No hay UI asignada para el estado {next}");
             return;
         }
-
         if (transitionRoutine != null)
             StopCoroutine(transitionRoutine);
 

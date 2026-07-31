@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -27,14 +29,14 @@ public class EnemySpawner : MonoBehaviour
     [Tooltip("Distancia extra antes de destruir el objeto")]
     [SerializeField] private float destroyOffset = 3f;
     private bool startSpawn = false;
-    private Coroutine enemiesCoroutine;
+    private List<Coroutine> enemiesCoroutine = new List<Coroutine>();
     private void InitSpawn()
     {
-        StartCoroutine(SpawnRoutine(mineConfig, spawnYBottom, Vector3.up));
-        StartCoroutine(SpawnRoutine(eelConfig, spawnYBottom, Vector3.up));
-        StartCoroutine(SpawnRoutine(urchinConfig, spawnYTop, Vector3.down));
-        StartCoroutine(SpawnRoutine(sharkConfig, spawnYBottom, Vector3.up));
-        enemiesCoroutine = StartCoroutine(SpawnRoutine(tentacleConfig, spawnYBottom, Vector3.up));
+        enemiesCoroutine.Add(StartCoroutine(SpawnRoutine(mineConfig, spawnYBottom, Vector3.up)));
+        enemiesCoroutine.Add(StartCoroutine(SpawnRoutine(eelConfig, spawnYBottom, Vector3.up)));
+        enemiesCoroutine.Add(StartCoroutine(SpawnRoutine(urchinConfig, spawnYTop, Vector3.down)));
+        enemiesCoroutine.Add(StartCoroutine(SpawnRoutine(sharkConfig, spawnYBottom, Vector3.up)));
+        enemiesCoroutine.Add(StartCoroutine(SpawnRoutine(tentacleConfig, spawnYBottom, Vector3.up)));
     }
 
     private IEnumerator SpawnRoutine(EnemyConfig config, float spawnY, Vector3 moveDirection)
@@ -47,18 +49,26 @@ public class EnemySpawner : MonoBehaviour
             SpawnEnemy(config, spawnY, moveDirection);
         }
     }
-    public void StartSpawn(bool startSpawn) 
+    public void StartSpawn(bool startSpawn)
     {
         this.startSpawn = startSpawn;
         if (startSpawn)
         {
-            if (enemiesCoroutine == null)
+            if (enemiesCoroutine.Count == 0)
             {
                 InitSpawn();
             }
         }
     }
-  
+    public void ResetSpawn()
+    {
+        startSpawn = false;
+        foreach (var coroutine in enemiesCoroutine)
+        {
+            StopCoroutine(coroutine);
+        }
+        enemiesCoroutine.Clear();
+    }
 
     private void SpawnEnemy(EnemyConfig config, float spawnY, Vector3 moveDirection)
     {

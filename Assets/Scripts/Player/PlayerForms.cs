@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerForms : MonoBehaviour
 {
@@ -8,7 +7,8 @@ public class PlayerForms : MonoBehaviour
     public GameObject forma3;
     private int health = 3;
     private bool gameOver = false;
-   
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
     public GameObject FormaActual
     {
         get
@@ -18,16 +18,20 @@ public class PlayerForms : MonoBehaviour
             else return forma1;
         }
     }
+
+    public bool IsGameOver => gameOver;
     private PlayerClickMove playerClickMove;
 
     void Start()
     {
         playerClickMove = GetComponent<PlayerClickMove>();
         ActivarForma(3);
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
     }
     public void SiguienteForma()
     {
-        if (!gameOver) 
+        if (!gameOver)
         {
             health--;
             if (health <= 0)
@@ -40,22 +44,15 @@ public class PlayerForms : MonoBehaviour
             ActivarForma(health);
 
         }
-     
     }
 
-    public void GameOver() 
+    public void GameOver()
     {
         gameOver = true;
-        EnemyBase[] enemies = FindObjectsByType<EnemyBase>(FindObjectsSortMode.None);
-        foreach (EnemyBase enemy in enemies) 
-        {
-            Destroy(enemy.gameObject);
-        }
         UIManager.Instance.ShowGameOver();
         AudioManager.Instance.PlaySFXPlayerDeath();
         Debug.Log("GAME OVER");
         health = 0;
-
     }
 
     private void ActivarForma(int index)
@@ -64,5 +61,15 @@ public class PlayerForms : MonoBehaviour
         forma2.SetActive(index == 2);
         forma3.SetActive(index == 3);
         playerClickMove.SetForma(FormaActual);
+    }
+
+    public void ResetPlayer()
+    {
+        health = 3;
+        gameOver = false;
+        ActivarForma(health);
+        transform.position = initialPosition;
+        transform.rotation = initialRotation;
+        playerClickMove.SetPlayerStart(true);
     }
 }

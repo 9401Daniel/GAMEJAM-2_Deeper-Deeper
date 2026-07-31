@@ -74,14 +74,26 @@ public class PlayerClickMove : MonoBehaviour
         }
     }
 
-    public void SetPlayerStart(bool playerStart) 
+    public void SetPlayerStart(bool playerStart)
     {
         this.playerStart = playerStart;
-    
     }
 
     public void SetForma(GameObject nuevaForma)
     {
         forma = nuevaForma;
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            tieneDestino = false;
+        }
+    }
+
+    public void OnCollisionStay(Collision collision)
+    {
+        OnCollisionEnter(collision);
     }
 }
